@@ -1,0 +1,17 @@
+This is set of scripts which can be useful when finding php generated spam in your mailq
+
+
+./mailq-php-script.sh depends on php.ini configuration:
+
+	mail.add_x_header = On
+
+which adds X-PHP-Originating-Script header to e-mails, which you can then find in your
+postfix mailq to figure out which scripts are generating e-mails.
+
+Very suspicios lines look like this:
+
+ 65534:logs.php(2) : eval()'d code(1) : eval()'d code(1) : eval()'d code(1) : eval()'d code(1) : eval()'d code(1) : eval()'d code(2) : eval()'d code(1731) : eval()'d codeN=From: =?UTF-8?B?TGlsaWFuYQ==?= <lawrence.wiper@scotent.co.uk>N
+ 65534:logs.php(2) : eval()'d code(1) : eval()'d code(1) : eval()'d code(1) : eval()'d code(1) : eval()'d code(1) : eval()'d code(2) : eval()'d code(1731) : eval()'d codeN=From: =?UTF-8?B?SmVzc2ljYQ==?= <martin.baray@sslaccess.co.uk>N
+ 65534:logs.php(2) : eval()'d code(1) : eval()'d code(1) : eval()'d code(1) : eval()'d code(1) : eval()'d code(1) : eval()'d code(2) : eval()'d code(1731) : eval()'d codeN0From: =?UTF-8?B?QXNobGV5?= <daiee@hotmail.co.uk>N
+
+With this info, you can lookup logs.php file on your php server and clean them up. 
