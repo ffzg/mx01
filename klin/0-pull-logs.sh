@@ -5,8 +5,10 @@ pull() {
 	rsync -va $1:/var/log/mail.log* log.d/$1
 }
 
-pull ws1
-pull mudrac
-pull mx01
+rsync -va mudrac:/etc/aliases log.d/mudrac/
+
 pull deenes
-#pull pauk
+pull mx01
+pull mudrac
+pull pauk
+pull ws1
