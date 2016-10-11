@@ -5,6 +5,7 @@ use strict;
 use Data::Dump qw(dump);
 my $stat;
 my $l = 0;
+my $top = $ENV{TOP} || 5;
 
 while(<>) {
 	chomp;
@@ -34,7 +35,7 @@ foreach my $mon ( sort keys %$stat ) {
 			foreach my $email ( sort { $e->{$b} <=> $e->{$a} } keys %$e ) {
 				if ( $n == 0 ) {
 					printf $fmt, $mon, $dd, $t, $e->{$email}, $email;
-				} elsif ( $n == 5 ) { # XXX top
+				} elsif ( $n == $top ) { # stop after top entries
 					last;
 				} else {
 					printf $fmt, '', '', '', $e->{$email}, $email;
@@ -47,6 +48,9 @@ foreach my $mon ( sort keys %$stat ) {
 }
 #print "_from = ",dump( $stat->{_from} );
 print "# XXX count,email\n";
+my $nr = 0;
 foreach my $email ( sort { $stat->{_from}->{$b} <=> $stat->{_from}->{$a} } keys %{ $stat->{_from} } ) {
 	printf "%4d %s\n", $stat->{_from}->{$email}, $email;
+	$nr++;
+	last if $nr == $top;
 }
