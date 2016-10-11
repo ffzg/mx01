@@ -18,6 +18,8 @@ while(<$a>) {
 }
 close($a);
 
+open(my $s, '>>', "spam.$$.log");
+
 my $spam;
 my $ids;
 
@@ -47,10 +49,12 @@ while(<>) {
 			#warn "# OK $id $from ",dump( $ids->{$id} );
 			print STDERR ".";
 			delete $ids->{$id};
-		} else {
+		} elsif ( $from ne 'MAILER-DAEMON' ) {
 			#warn "SPAM $id $from ",dump( $ids->{$id}, $_ );
 			print STDERR "S";
 			$spam->{$login}++;
+			print $s "$id $from ",dump( $ids->{$id} ), "$_\n";
+			$s->flush;
 		}
 	}
 }
