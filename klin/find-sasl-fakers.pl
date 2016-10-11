@@ -18,7 +18,8 @@ while(<$a>) {
 }
 close($a);
 
-open(my $s, '>>', "spam.$$.log");
+mkdir 'spam' unless -e 'spam';
+open(my $s, '>>', "spam/$$.log");
 
 my $spam;
 my $ids;
@@ -58,6 +59,12 @@ while(<>) {
 		}
 	}
 }
+
+if ( -s $s == 0 ) {
+	warn "# cleanup empty log";
+	unlink $s;
+}
+
 
 #warn "# ids ",dump($ids);
 warn "# spam ",dump($spam);
