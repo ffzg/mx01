@@ -45,4 +45,4 @@ my $find;
 
 delete $stat->{aliases};
 
-print "# stat = ",dump($stat), $/;
+print "# stat = ",dump($stat), $/ if scalar(keys(%$stat)) > 1;
