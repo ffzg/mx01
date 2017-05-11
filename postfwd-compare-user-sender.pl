@@ -12,7 +12,7 @@ while(<$fh>) {
 	chomp;
 	next unless m/:\s+/;
 	my ( $from, $to ) = split(/:\s*/,$_,2);
-	$stat->{aliases}->{$from} = $to;
+	$stat->{aliases}->{lc($from)} = $to;
 }
 close($fh);
 
@@ -25,10 +25,10 @@ while(<>) {
 		$user =~ s/\@ffzg.hr$//;
 		$sender =~ s/\@ffzg.hr$//;
 
-		next if $user eq $sender;
+		next if lc($user) eq lc($sender);
 
-		if ( exists $stat->{aliases}->{$sender} ) {
-			my $to = $stat->{aliases}->{$sender};
+		if ( exists $stat->{aliases}->{lc($sender)} ) {
+			my $to = $stat->{aliases}->{lc($sender)};
 			#warn "# alias $sender -> $to";
 			if ( $to ne $user ) {
 				$stat->{warn}->{$user}->{$sender}++;
