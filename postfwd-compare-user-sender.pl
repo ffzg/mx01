@@ -20,7 +20,7 @@ while(<>) {
 	chomp;
 	if ( m/postfwd.*user=(\S+), sender=<([^>]+)/ ) {
 		$stat->{_lines}++;
-		print STDERR '.' if $stat->{_lines} % 1000 == 0;
+		#print STDERR '.' if $stat->{_lines} % 1000 == 0;
 		my ($user,$sender) = ($1,$2);
 		$user =~ s/\@ffzg.hr$//;
 		$sender =~ s/\@ffzg.hr$//;
