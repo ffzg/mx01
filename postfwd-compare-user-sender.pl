@@ -45,4 +45,17 @@ my $find;
 
 delete $stat->{aliases};
 
-print "# stat = ",dump($stat), $/ if scalar(keys(%$stat)) > 1;
+while(<DATA>) {
+	chomp;
+	delete $stat->{spam}->{$_};
+	delete $stat->{warn}->{$_};
+}
+
+print "# stat = ",dump($stat), $/ if defined $stat->{spam} && scalar(keys(%{$stat->{spam}})) > 1;
+
+
+# whitelist below this line
+__DATA__
+okditko
+ciristest
+
