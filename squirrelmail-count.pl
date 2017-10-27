@@ -7,9 +7,14 @@ use Data::Dump qw(dump);
 
 my $stat;
 
-open(my $fh, '<', '/var/log/mail.log');
-if ( -e '/dev/shm/mail.tell' ) {
-	open(my $fh_tell, '<', '/dev/shm/mail.tell');
+my $file = shift @ARGV || '/var/log/mail.log';
+
+open(my $fh, '<', $file);
+my $tell = $file;
+$tell =~ s/\W//g;
+$tell = "/dev/shm/tell.$tell";
+if ( -e $tell ) {
+	open(my $fh_tell, '<', $tell);
 	my $pos = <$fh_tell>;
 	eval {
 		seek($fh, $pos, 0);
@@ -29,6 +34,6 @@ while(<$fh>) {
 }
 
 warn dump($stat);
-open(my $fh_tell, '>', '/dev/shm/mail.tell');
+open(my $fh_tell, '>', $tell);
 print $fh_tell tell($fh);
 close($fh_tell);
