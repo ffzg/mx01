@@ -3,24 +3,13 @@ use warnings;
 use strict;
 use autodie;
 
+# ./squirrelmail-count.pl /var/log/mail.log
+
 use Data::Dump qw(dump);
 
 my $stat;
 
-my $file = shift @ARGV || '/var/log/mail.log';
-
-open(my $fh, '<', $file);
-my $tell = $file;
-$tell =~ s/\W//g;
-$tell = "/dev/shm/tell.$tell";
-if ( -e $tell && ! $ENV{DEBUG} ) {
-	open(my $fh_tell, '<', $tell);
-	my $pos = <$fh_tell>;
-	eval {
-		seek($fh, $pos, 0);
-	}
-}
-while(<$fh>) {
+while(<>) {
 	if ( m/squirrelmail/ ) {
 		chomp;
 		my ( undef, $action, $user, $ip ) = split(/[:,]\s/,$_,4);
@@ -33,11 +22,7 @@ while(<$fh>) {
 	}
 }
 
-warn dump($stat) if $ENV{DEBUG};
-
-open(my $fh_tell, '>', $tell);
-print $fh_tell tell($fh);
-close($fh_tell);
+warn dump($stat);
 
 if ( exists $stat->{'Mass mailing'} ) {
 	foreach my $user ( keys %{ $stat->{'Mass mailing'} } ) {
@@ -46,7 +31,7 @@ if ( exists $stat->{'Mass mailing'} ) {
 			$count += $stat->{'Mass mailing'}->{$user}->{$ip};
 		}
 		if ( $count > 5 ) { # FIXME arbitrary set for our users to avoid false trigger
-			print "$user MASS MAILING $count times\n";
+			print "$user MASS MAILING $count times ip:", join(' ',keys %{ $stat->{'Mass mailing'}->{$user} }),"\n";
 		}
 	}
 }
