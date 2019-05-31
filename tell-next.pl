@@ -13,9 +13,13 @@ $tell = "/dev/shm/tell.$tell";
 if ( -e $tell && ! $ENV{DEBUG} ) {
 	open(my $fh_tell, '<', $tell);
 	my $pos = <$fh_tell>;
-	eval {
-		warn "# $file seek $pos\n";
-		seek($fh, $pos, 0);
+	if ( $pos < -s $file ) {
+		eval {
+			warn "# $file seek $pos\n";
+			seek($fh, $pos, 0);
+		}
+	} else {
+		warn "# $file from beginning";
 	}
 }
 
