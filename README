@@ -15,3 +15,14 @@ Very suspicios lines look like this:
  65534:logs.php(2) : eval()'d code(1) : eval()'d code(1) : eval()'d code(1) : eval()'d code(1) : eval()'d code(1) : eval()'d code(2) : eval()'d code(1731) : eval()'d codeN0From: =?UTF-8?B?QXNobGV5?= <daiee@hotmail.co.uk>N
 
 With this info, you can lookup logs.php file on your php server and clean them up. 
+
+
+Perl scripts are mostly designed to be run from crontab to generate reports. To do so, they leave
+files in /dev/shm/ which can be useful for other monitoring tools or quick overview of machine stats.
+
+Example crontab file:
+
+# m h   dom mon dow     command
+42 */1  * * *   /home/dpavlin/mx01/tell-next.pl /home/dpavlin/mx01/postfwd-compare-user-sender.pl /var/log/mail.log 2>/dev/shm/postfwd-compare-user-sender.log
+*/5 *   * * *   /home/dpavlin/mx01/tell-next.pl /home/dpavlin/mx01/squirrelmail-count.pl /var/log/mail.log 2>/dev/shm/squirrelmail-count.log
+
