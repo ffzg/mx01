@@ -1,0 +1,10 @@
+#!/bin/sh -e
+
+(
+ls /var/log/mail.log-* | while read log ; do
+	echo "# $log"
+	# count unique recipients for each logged in user
+	zgrep user= $log | grep recipient= | grep -v 193.198.21[2-5] | sed -e 's/^.*user=//' -e 's/,.*recipient=/ /' -e 's/,.*$//' | sort -u | cut -d' ' -f1 | uniq -c | sort -rn | head -5
+done
+) | tee /dev/shm/$( basename $0 ).txt
+
