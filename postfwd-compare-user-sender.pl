@@ -24,6 +24,8 @@ while(<>) {
 		my ($user,$sender) = ($1,$2);
 		$user =~ s/\@ffzg.hr$//;
 		$sender =~ s/\@ffzg.hr$//;
+		$user =~ s/\@ffzg.unizg.hr$//;
+		$sender =~ s/\@ffzg.unizg.hr$//;
 
 		next if lc($user) eq lc($sender);
 
