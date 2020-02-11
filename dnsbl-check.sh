@@ -6,7 +6,6 @@ echo "# ips: $ips"
 rblcheck \
 -s all.s5h.net \
 -s b.barracudacentral.org \
--s bl.emailbasura.org \
 -s bl.spamcop.net \
 -s blacklist.woody.ch \
 -s bogons.cymru.com \
