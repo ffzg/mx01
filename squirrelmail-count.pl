@@ -22,7 +22,7 @@ while(<>) {
 	}
 }
 
-warn dump($stat);
+#warn dump($stat);
 
 if ( exists $stat->{'Mass mailing'} ) {
 	foreach my $user ( keys %{ $stat->{'Mass mailing'} } ) {
@@ -32,6 +32,8 @@ if ( exists $stat->{'Mass mailing'} ) {
 		}
 		if ( $count > 5 ) { # FIXME arbitrary set for our users to avoid false trigger
 			print "$user MASS MAILING $count times ip:", join(' ',keys %{ $stat->{'Mass mailing'}->{$user} }),"\n";
+			my $ip = ( keys %{ $stat->{'Mass mailing'}->{$user} } )[0];
+			system "geoiplookup $ip | grep -v HR && ssh -i /var/lib/postfw/.ssh/id_rsa root\@mudrac $user";
 		}
 	}
 }
