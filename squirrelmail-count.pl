@@ -37,7 +37,7 @@ if ( exists $stat->{'Mass mailing'} ) {
 			chomp $country;
 			print "$country\n";
 		       	if ( $country !~ m/HR/ ) {
-				system "ssh -i /var/lib/postfw/.ssh/id_rsa root\@mudrac $user";
+				system "ssh -i /home/dpavlin/.ssh/postfw/id_rsa root\@mudrac $user";
 			}
 		}
 	}
