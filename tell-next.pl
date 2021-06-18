@@ -3,8 +3,12 @@ use warnings;
 use strict;
 use autodie;
 
-my ($command,$file) = @ARGV;
-die "usage: $0 /bin/cat /var/log/mail.log" unless -x $command && -r $file;
+#my ($command,$file) = @ARGV;
+my $file = pop @ARGV;
+my $cmd = $ARGV[0];
+my $command = join(' ', @ARGV);
+
+die "usage: $0 /bin/cat [optional arguments] /var/log/mail.log" unless -x $cmd && -r $file;
 
 open(my $fh, '<', $file);
 my $tell = $command . $file;
