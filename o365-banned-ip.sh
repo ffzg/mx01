@@ -7,7 +7,7 @@ if [ -z "$log" ] ; then
 fi
 
 while [ ! -z "$log" ] ; do
-	echo "# $log"
+	#echo "# $log"
 	zgrep 'banned sending IP' $log | tee /dev/shm/o365.banned.tmp
 
 	cat /dev/shm/o365.banned.tmp | sed -e 's/^.*banned sending IP \[//' -e 's/\].*$//' | sort -u >> /dev/shm/o365.banned.ip.tmp
@@ -20,5 +20,8 @@ while [ ! -z "$log" ] ; do
 	fi
 done
 
-echo "# banned IPs on o365:"
-sort -u /dev/shm/o365.banned.ip.tmp
+sort -u /dev/shm/o365.banned.ip.tmp > /dev/shm/o365.banned.ip
+if [ -s /dev/shm/o365.banned.ip ] ; then
+	echo "# banned IPs on o365:"
+	cat /dev/shm/o365.banned.ip
+fi
