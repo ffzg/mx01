@@ -57,5 +57,5 @@ rblcheck \
 -s z.mailspike.net \
 -s zen.spamhaus.org \
 -s zombie.dnsbl.sorbs.net \
-$ips | grep -v 'not listed by'
+$ips | tee /dev/shm/dnsbl-check | grep -v 'not listed by'
 
