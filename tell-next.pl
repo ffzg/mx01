@@ -3,8 +3,18 @@ use warnings;
 use strict;
 use autodie;
 
-my ($command,$file) = @ARGV;
-die "usage: $0 /bin/cat /var/log/mail.log" unless -x $command && -r $file;
+#my ($command,$file) = @ARGV;
+my $file = pop @ARGV;
+my $cmd = $ARGV[0];
+my $command = join(' ', map {
+	if ( m/[\(\)\|]/ ) {	# quote special chars, eg. (foo|bar)
+		"'$_'"
+	} else {
+		$_
+	}
+} @ARGV);
+
+die "usage: $0 /bin/cat [optional arguments] /var/log/mail.log" unless -x $cmd && -r $file;
 
 open(my $fh, '<', $file);
 my $tell = $command . $file;
@@ -13,7 +23,7 @@ $tell = "/dev/shm/tell.$tell";
 if ( -e $tell && ! $ENV{DEBUG} ) {
 	open(my $fh_tell, '<', $tell);
 	my $pos = <$fh_tell>;
-	if ( $pos < -s $file ) {
+	if ( $pos <= -s $file ) {
 		eval {
 			#warn "# $file seek $pos\n";
 			seek($fh, $pos, 0);
