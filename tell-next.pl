@@ -19,11 +19,11 @@ if ( -e $tell && ! $ENV{DEBUG} ) {
 	my $pos = <$fh_tell>;
 	if ( $pos < -s $file ) {
 		eval {
-			warn "# $file seek $pos\n";
+			#warn "# $file seek $pos\n";
 			seek($fh, $pos, 0);
 		}
 	} else {
-		warn "# $file from beginning";
+		#warn "# $file from beginning";
 	}
 }
 
