@@ -5,6 +5,11 @@ use strict;
 # DELAY=5 ./maillog-delay.pl /var/log/mail.log
 # zcat /var/log/mail.log-2021120*.gz | DELAY=60 ./maillog-delay.pl
 
+# if we don't have pipe or arguments
+if ( -t STDIN and not @ARGV ) {
+	push @ARGV, '/var/log/mail.log';
+}
+
 my $debug = $ENV{DEBUG} || 0;
 my $delay = $ENV{DELAY} || 60;
 
