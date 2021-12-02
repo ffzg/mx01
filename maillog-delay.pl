@@ -17,7 +17,8 @@ my $min = 999_999;
 my $max = 0;
 
 my $stat;
-use Data::Dump;
+use Data::Dumper;
+$Data::Dumper::Indent = 1;
 
 open(my $ids, '>', '/dev/shm/msg.ids');
 
@@ -51,4 +52,4 @@ while(<>) {
 }
 
 print "# min:$min max:$max\n";
-print Data::Dump::dump( $stat );
+print Dumper( $stat );
