@@ -19,6 +19,8 @@ my $max = 0;
 my $stat;
 use Data::Dump;
 
+open(my $ids, '>', '/dev/shm/msg.ids');
+
 while(<>) {
 	chomp;
 	next if m/status=deferred/;
@@ -35,6 +37,10 @@ while(<>) {
 			if ( m/to=<[^@]+@([^>]+)>/ ) {
 				$stat->{to_domain}->{lc($1)}++;
 			}
+
+			my @s = split(/\s+/,$_);
+			my $id = $s[5]; $id =~ s/:$//;
+			print $ids "$id\n";
 		} else {
 			#print "#[$d]# $_\n";
 		}
