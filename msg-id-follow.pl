@@ -24,6 +24,10 @@ while(<>) {
 			$id_regex .= '|' . $1;
 			#warn "## ++ id_regex: $id_regex\n";
 		}
+		if ( m/forwarded as ([0-9A-F]+)/ ) {
+			$id_regex .= '|' . $1;
+			#warn "## ++ id_regex: $id_regex\n";
+		}
 		if ( m/: ([0-9A-F]+): removed/ ) {
 			$id_regex =~ s/$1\|//;
 			#warn "## -- id_regex: $id_regex\n";
