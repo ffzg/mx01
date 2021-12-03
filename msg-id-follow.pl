@@ -17,7 +17,8 @@ warn "# got ", scalar(@ids), " message ids $id_regex\n";
 
 while(<>) {
 	chomp;
-	if ( m/: ($id_regex):/ ) {
+	#if ( m/: ($id_regex):/ ) { # only postfix lines
+	if ( m/($id_regex)/ ) {	# everything with this queue id
 		print "$_\n";
 		if ( m/queued as ([0-9A-F]+)/ ) {
 			$id_regex .= '|' . $1;
