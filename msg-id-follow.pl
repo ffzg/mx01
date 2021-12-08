@@ -25,6 +25,7 @@ while(<>) {
 	#if ( m/: ($id_regex):/ ) { # only postfix lines
 	if ( m/($id_regex)/ ) {	# everything with this queue id
 		$id_usage->{$1}++;
+		print "[$1] " if $debug;
 		print "$_\n";
 		if ( m/queued as ([0-9A-F]+)/ ) {
 			if ( length($1) >= 7 ) { # minimum valid message id
@@ -44,6 +45,7 @@ while(<>) {
 		}
 
 		$id_regex = join('|', keys %$id_usage) if ( ! $id_regex );
+		last if $id_regex eq '';
 	}
 }
 
