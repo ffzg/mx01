@@ -3,4 +3,4 @@
 # blacklist m$, yahoo
 */5 *	* * *		/home/dpavlin/tell-next.pl /bin/egrep '(S3150|TSS04)' /var/log/mail.log
 # block
-*/5 *	* * *		/home/dpavlin/tell-next.pl /bin/grep block /var/log/mail.log | grep -v https://support.google.com/mail/
+*/5 *	* * *		/home/dpavlin/tell-next.pl /bin/grep block /var/log/mail.log | grep -v https://support.google.com/mail/ | grep -v blockchain
