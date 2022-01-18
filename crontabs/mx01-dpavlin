@@ -1,0 +1,6 @@
+# m h  dom mon dow   command
+*/5 *	* * *		/home/dpavlin/tell-next.pl /home/dpavlin/o365-banned-ip.sh - /var/log/mail.log
+# blacklist m$, yahoo
+*/5 *	* * *		/home/dpavlin/tell-next.pl /bin/egrep '(S3150|TSS04)' /var/log/mail.log
+# block
+*/5 *	* * *		/home/dpavlin/tell-next.pl /bin/grep block /var/log/mail.log | grep -v https://support.google.com/mail/
