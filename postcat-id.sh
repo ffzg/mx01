@@ -1,4 +1,5 @@
 #!/bin/sh -e
 
 sudo id
-sudo find /var/spool/postfix/deferred/ -name $1 | sudo xargs -i postcat {} | less
+id=$( echo $1 | sed s/!$// )
+sudo find /var/spool/postfix/ -name $id | sudo xargs -i postcat {} | less
