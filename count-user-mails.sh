@@ -17,3 +17,4 @@ ls /var/log/mail.log-$DATE* | while read log ; do
 done
 ) | tee /dev/shm/$( basename $0 ).txt
 
+cat /dev/shm/count-user-mails.sh.txt | awk '$1 > 300 { print $2 }' | tail -9 | tee /dev/shm/spam.logins
