@@ -1,5 +1,7 @@
 #!/bin/sh -xe
 
+:> /dev/shm/msg.ids
+
 if [ ! -z "$LOG" ] ; then
 	log_file=/tmp/$( basename $LOG )
 	zcat $LOG > $log_file
@@ -9,4 +11,6 @@ if [ ! -z "$LOG" ] ; then
 fi
 
 
-grep postfix /var/log/mail.log | grep "$@" | tee /dev/stderr | sed -e 's/^.*\]: \([0-9A-F]*\):.*$/\1/' | sort -u > /dev/shm/msg.ids
+zgrep postfix $( ls -t /var/log/mail.log-*.gz | head -1 ) | grep "$@" | tee /dev/stderr | $( dirname $0 )/msg-id-filter.sh
+grep postfix /var/log/mail.log | grep "$@" | tee /dev/stderr | $( dirname $0 )/msg-id-filter.sh
+( zcat $( ls -t /var/log/mail.log-*.gz | head -1 ) ; cat /var/log/mail.log ) | $( dirname $0 )/msg-id-follow.pl | less -S
