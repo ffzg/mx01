@@ -20,6 +20,8 @@ my $id_regex = join('|', @ids);
 
 warn "# got ", scalar(@ids), " message ids $id_regex\n";
 
+my $count;
+
 while(<>) {
 	chomp;
 	#if ( m/: ($id_regex):/ ) { # only postfix lines
@@ -44,9 +46,25 @@ while(<>) {
 			delete $id_usage->{$1}; undef $id_regex;
 		}
 
+		if ( m/client=[^\[]+\[([^\]]+)\]/ ) {
+			$count->{client}->{$1}++;
+
+		}
+		if ( m/to=<([^>]+)/ ) {
+			my $to = $1;
+			if ( m/orig_to=<([^>]+)/ ) {
+				$count->{to}->{$1}++;
+			} else {
+				$count->{to}->{$to}++;
+			}
+		}
+		if ( m/from=<([^>]+)/ ) {
+			$count->{from}->{$1}++;
+		}
+
 		$id_regex = join('|', keys %$id_usage) if ( ! $id_regex );
 		last if $id_regex eq '';
 	}
 }
-
+print "# count = ",Dumper( $count );
 print "# left ",Dumper( $id_usage );
