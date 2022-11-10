@@ -45,11 +45,17 @@ while(<>) {
 			warn "## -- removed id_regex: $1\n" if $debug;
 			delete $id_usage->{$1}; undef $id_regex;
 		}
+		if ( m/Queue-ID: ([0-9A-F]+)/ ) {
+			$id_usage->{$1}++;
+		}
+		if ( m/Queue-ID: ([0-9A-F]+)/ ) {
+			$id_usage->{$1}++;
+		}
 
 		if ( m/client=[^\[]+\[([^\]]+)\]/ ) {
 			$count->{client}->{$1}++;
-
 		}
+
 		if ( m/to=<([^>]+)/ ) {
 			my $to = $1;
 			if ( m/orig_to=<([^>]+)/ ) {
@@ -62,8 +68,10 @@ while(<>) {
 			$count->{from}->{$1}++;
 		}
 
-		$id_regex = join('|', keys %$id_usage) if ( ! $id_regex );
+		$id_regex = join('|', keys %$id_usage);
 		last if $id_regex eq '';
+	} elsif ( my $grep = $ENV{GREP} ) {
+		print "#$_\n" if m/$grep/;
 	}
 }
 print "# count = ",Dumper( $count );

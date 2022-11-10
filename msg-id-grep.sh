@@ -13,4 +13,5 @@ fi
 
 zgrep postfix $( ls -t /var/log/mail.log-*.gz | head -1 ) | grep "$@" | tee /dev/stderr | $( dirname $0 )/msg-id-filter.sh
 grep postfix /var/log/mail.log | grep "$@" | tee /dev/stderr | $( dirname $0 )/msg-id-filter.sh
+export GREP="$@"
 ( zcat $( ls -t /var/log/mail.log-*.gz | head -1 ) ; cat /var/log/mail.log ) | $( dirname $0 )/msg-id-follow.pl | less -S
