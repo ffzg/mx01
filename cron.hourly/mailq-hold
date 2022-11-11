@@ -1,0 +1,16 @@
+#!/bin/sh
+
+mailq > /dev/shm/mailq
+if grep \! /dev/shm/mailq >/dev/null ; then
+	if [ -e /dev/shm/mailq.last ] ; then
+		diff /dev/shm/mailq /dev/shm/mailq.last >/dev/null || cat /dev/shm/mailq && mv /dev/shm/mailq /dev/shm/mailq.last
+	else
+		cat /dev/shm/mailq
+		mv /dev/shm/mailq /dev/shm/mailq.last
+	fi
+fi
+
+/home/dpavlin/mx01/hold-remove-spam.sh
+/home/dpavlin/mx01/unhold-lists.sh
+
+
