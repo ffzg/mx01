@@ -15,9 +15,16 @@ write_discard() {
 	echo "/$patt/	DISCARD" | tee -a $file
 
 	./hold-remove-grep.sh $patt
+
+	exit 1;
 }
 
-mailq | grep '^[0-9A-F]' | sort -k 7 | grep \! | while read line ; do
+echo "# top 5 from" > /dev/stderr
+most_from=$( mailq | grep '^[0-9A-F]' | sort -k 7 | grep \! | awk '{ print $7 }' | sort | uniq -c | sort -nr | head -5 | tee /dev/stderr | head -1 | awk '{ print $2 }');
+
+echo "## most_from $most_from"
+
+mailq | grep '^[0-9A-F]' | sort -k 7 | grep \! | grep $most_from | while read line ; do
 
 	id=$( echo $line | cut -d\! -f1 )
 
@@ -27,6 +34,7 @@ mailq | grep '^[0-9A-F]' | sort -k 7 | grep \! | while read line ; do
 	sudo find /var/spool/postfix/ -name $id | sudo xargs -i postcat {} > $id_file
 	reply_to=$( grep '^Reply-To: .*' $id_file | cut -d: -f2 )
 	if [ ! -z "$reply_to" ] ; then
+		less $id_file
 		write_discard "$reply_to" # quote to pass as signle arg
 		echo $id | tee $discard_file.id
 
