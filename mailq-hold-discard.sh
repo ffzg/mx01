@@ -43,13 +43,14 @@ line=$( mailq | grep '^[0-9A-F]' | grep \! | grep $most_from )
 		less -P "find pattern" $id_file
 	fi
 
-		read -p "ENTER anything and press ENTER to discard (ctrl+c to abort) [$sender] " do_discard < /dev/stdin
-		test ! -z "$do_discard" && write_discard "$do_discard" ".body"
-		echo "unhold	postsuper -H $id"
-		echo "delete	postsuper -d $id"
 
-		sender=$( grep '^sender: ' $id_file | grep '[0-9][0-9]*@gmail.com' | cut -d' ' -f2 )
-		write_discard "$sender"
+	read -p "ENTER anything and press ENTER to discard (ctrl+c to abort) [$sender] " do_discard < /dev/stdin
+	test ! -z "$do_discard" && write_discard "$do_discard" ".body"
+	echo "unhold	postsuper -H $id"
+	echo "delete	postsuper -d $id"
+
+	sender=$( grep '^sender: ' $id_file | grep '[0-9][0-9]*@gmail.com' | cut -d' ' -f2 )
+	write_discard "$sender"
 
 
 
