@@ -44,15 +44,18 @@ line=$( mailq | grep '^[0-9A-F]' | grep \! | grep $most_from )
 	fi
 
 
-	read -p "ENTER anything and press ENTER to discard (ctrl+c to abort) [$sender] " do_discard < /dev/stdin
+	read -p "ENTER anything from body and press ENTER to discard (ctrl+c to abort) " do_discard < /dev/stdin
 	test ! -z "$do_discard" && write_discard "$do_discard" ".body"
 	echo "unhold	postsuper -H $id"
 	echo "delete	postsuper -d $id"
 
-	sender=$( grep '^sender: ' $id_file | grep '[0-9][0-9]*@gmail.com' | cut -d' ' -f2 )
-	write_discard "$sender"
-
-
-
+	sender=$( grep '^sender: ' $id_file | cut -d' ' -f2 )
+	gmail_sender=$( echo $sender | grep '[0-9][0-9]*@gmail.com' || true )
+	if [ ! -z "$gmail_sender" ] ; then
+		write_discard "$gmail_sender"
+	else
+		read -p "ADD $sender by pressing ENTER to discard (ctrl+c to abort)" do_discard < /dev/stdin
+		write_discard "$sender"
+	fi
 
 #done
