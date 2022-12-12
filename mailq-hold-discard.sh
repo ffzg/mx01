@@ -31,11 +31,11 @@ line=$( mailq | grep '^[0-9A-F]' | grep \! | grep $most_from )
 	id_file=/dev/shm/id.$id
 
 	sudo find /var/spool/postfix/ -name $id | sudo xargs -i postcat {} > $id_file
-	reply_to=$( grep '^Reply-To: .*' $id_file | cut -d: -f2 )
+	reply_to=$( grep '^Reply-To: .*' $id_file | cut -d: -f2 | sed 's/.*<\([^>]*\)>/\1/' | sed 's/ *//' )
 	echo "## replay_to $replay_to"
 
 	if [ ! -z "$reply_to" ] ; then
-		less -P "DISCARD reply to $reply_to" $id_file
+		less -P "DISCARD reply to <$reply_to>" $id_file
 		write_discard "$reply_to" # quote to pass as signle arg
 		echo $id | tee $discard_file.id
 
