@@ -10,7 +10,10 @@ if grep \! /dev/shm/mailq >/dev/null ; then
 	fi
 fi
 
-/home/dpavlin/mx01/hold-remove-spam.sh
-/home/dpavlin/mx01/unhold-lists.sh
+cd /home/dpavlin/mx01/
+
+#./hold-remove-spam.sh
+./unhold-lists.sh
+./unhold-body.sh
 
 
