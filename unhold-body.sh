@@ -7,5 +7,6 @@ mailq | grep '^[0-9A-Z]*!' | awk '{ print $1 }' | sed 's/!$//' | while read id ;
 	#echo "### $id ###"
 	sudo find /var/spool/postfix/ -name $id | sudo xargs -i postcat {} | sed "s/^/$id /" | \
 		grep -i -E -f regex/unhold-body \
+		| tee /dev/stderr \
 		| cut -d' ' -f1 | sudo postsuper -H -
 done

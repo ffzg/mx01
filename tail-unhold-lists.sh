@@ -8,6 +8,7 @@ tail -F /var/log/mail.log  \
 	| grep ': [0-9A-F]*: hold:' \
 	| tee /dev/stderr \
 	| grep -B 1 -E -f regex/unhold-from \
+	| tee /dev/stderr \
 	| cut -d' ' -f6 | tr -d ':' \
 	| xargs -i postsuper -H {}
 

@@ -6,6 +6,7 @@
 
 mailq \
 	| grep -B 1 -E -f regex/unhold-from \
+	| tee /dev/stderr \
 	| grep '^[0-9A-F]*!' \
 	| awk '{ print $1 }' | tr -d '!' | xargs -i postsuper -H {}
 sendmail -q
