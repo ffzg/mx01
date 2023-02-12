@@ -1,1 +1,1 @@
-grep -i -E '(hold|discard):' /var/log/mail.log
+grep -a -i -E '(hold|discard):' /var/log/mail.log

@@ -4,6 +4,15 @@
 
 # -B 1 to support to address from mailq
 
+cd /home/dpavlin/mx01
+
+tail -F /var/log/mail.log  \
+	| grep --line-buffered ': [0-9A-F]*: hold:' \
+	| xargs -i sh -cx './unhold-lists.sh ; ./unhold-body.sh'
+		
+done
+
+exit 0
 tail -F /var/log/mail.log  \
 	| grep ': [0-9A-F]*: hold:' \
 	| tee /dev/stderr \
