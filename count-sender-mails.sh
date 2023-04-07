@@ -6,7 +6,7 @@
 # filter just some files by date:
 # DATE=202111 ./count-user-mails.sh
 
-LIMIT="head -5"
+LIMIT="head -10"
 test ! -z "$1" && LIMIT="$@"
 
 (
